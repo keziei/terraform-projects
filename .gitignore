@@ -4,7 +4,10 @@
 # Ignore Terraform state files (local state)
 *.tfstate
 *.tfstate.backup
+*.terraform.lock.hcl
 
 # Ignore Terraform plan files
 *.tfplan
 
+# Ignore Terraform variables (may contain secrets)
+terraform.tfvars
