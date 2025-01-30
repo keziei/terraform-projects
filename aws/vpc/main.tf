@@ -9,20 +9,22 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public_bastion" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_bastion_subnet_cidr
-  availability_zone = var.public_bastion_az
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_bastion_subnet_cidr
+  availability_zone       = var.public_bastion_az
+  map_public_ip_on_launch = true
   tags = {
-    Name = "public_bastion_subnet"
+    Name = "Public Bastion Subnet"
   }
 }
 
 resource "aws_subnet" "public_web" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_web_subnet_cidr
-  availability_zone = var.public_web_az
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_web_subnet_cidr
+  availability_zone       = var.public_web_az
+  map_public_ip_on_launch = true
   tags = {
-    Name = "public_web_subnet"
+    Name = "Public Web Subnet"
   }
 }
 
@@ -31,7 +33,7 @@ resource "aws_subnet" "private_app" {
   cidr_block        = var.private_app_subnet_cidr
   availability_zone = var.private_app_az
   tags = {
-    Name = "private_app_subnet"
+    Name = "Private App Subnet"
   }
 }
 
@@ -40,6 +42,6 @@ resource "aws_subnet" "private_db" {
   cidr_block        = var.private_db_subnet_cidr
   availability_zone = var.private_db_az
   tags = {
-    Name = "private_db_subnet"
+    Name = "Private DB Subnet"
   }
 }
