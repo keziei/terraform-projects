@@ -8,7 +8,7 @@ This repository contains my personal Terraform projects and infrastructure autom
 Each directory in this repository represents a separate Terraform lab or module.
 
 ### **1. Target Infrastructure - WIP**
-- Deploy AWS 3 tier architecture with dedicated vpc and select cidr range, two db & app private tier, public web tier, and bastion public subnet across multi az
+- Deploy AWS 3 tier architecture with dedicated vpc and select cidr range, db & app private tier, public web tier, and bastion public subnet across multi az
 - Deploy flavours of aws rds/aurora database configurations that provide maa
 
 
