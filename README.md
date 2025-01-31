@@ -7,14 +7,10 @@ This repository contains my personal Terraform projects and infrastructure autom
 ## **Project Structure**
 Each directory in this repository represents a separate Terraform lab or module.
 
-### **1. AWS Infrastructure**
-Terraform configurations for provisioning AWS cloud resources.
+### **1. Target Infrastructure - WIP**
+- Deploy AWS 3 tier architecture with dedicated vpc and select cidr range, two db & app private tier, public web tier, and bastion public subnet across multi az
+- Deploy flavours of aws rds/aurora database configurations that provide maa
 
-📁 **`aws/vpc`**  
-- Deploys a Virtual Private Cloud (VPC) with subnets, route tables, and NAT gateways.
-
-📁 **`aws/ec2`**  
-- Launches EC2 instances with security groups, IAM roles, and autoscaling.
 
 ---
 
@@ -27,8 +23,3 @@ To use these Terraform configurations, ensure you have the following installed:
 
 ---
 
-## **Usage**
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/keziei/terraform-projects.git
-   cd terraform-projects
