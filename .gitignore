@@ -1,12 +1,16 @@
-# Ignore Terraform cache directories
-.terraform/
-
-# Ignore Terraform state files (local state)
+# Ignore Terraform state files
 *.tfstate
 *.tfstate.backup
+
+# Ignore Terraform variables override files
+*.tfvars
+
+# Ignore Terraform provider and module directories
+.terraform/
 
 # Ignore Terraform plan files
 *.tfplan
 
-# Ignore Terraform variables (may contain secrets)
-terraform.tfvars
+# Ignore sensitive files (e.g., private keys)
+*.pem
+*.key
