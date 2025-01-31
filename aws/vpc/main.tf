@@ -118,3 +118,111 @@ resource "aws_route_table_association" "private_db" {
   subnet_id      = aws_subnet.private_db.id
   route_table_id = aws_route_table.private_route.id
 }
+
+resource "aws_security_group" "bastion" {
+  name        = "bastion"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "SSH access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Open to the internet for Lab env
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Bastion Security Group"
+  }
+}
+
+resource "aws_security_group" "web" {
+  name        = "web"
+  description = "Allow HTTP & HTTPS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP access"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS access"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Web Security Group"
+  }
+}
+
+resource "aws_security_group" "app" {
+  name        = "app"
+  description = "Allow HTTP inbound traffic from Web Tier"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description     = "Allow HTTP traffic from Web Tier"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web.id] # Allow only from Web Security Group
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "App Security Group"
+  }
+}
+
+resource "aws_security_group" "database" {
+  name        = "database"
+  description = "Allow PostgreSQL inbound traffic from App Tier"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description     = "Allow PostgreSQL traffic from App Tier"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.app.id] # Allow only from App Security Group
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Database Security Group"
+  }
+}
