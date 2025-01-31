@@ -53,3 +53,45 @@ resource "aws_internet_gateway" "gw" {
     Name = var.internet_gateway
   }
 }
+
+resource "aws_route_table" "public_route" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0" # Default route for internet access
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
+  tags = {
+    Name = "Public Route"
+  }
+}
+
+resource "aws_route_table_association" "public_bastion" {
+  subnet_id      = aws_subnet.public_bastion.id
+  route_table_id = aws_route_table.public_route.id
+}
+
+resource "aws_route_table_association" "public_web" {
+  subnet_id      = aws_subnet.public_web.id
+  route_table_id = aws_route_table.public_route.id
+}
+
+resource "aws_eip" "nat" {
+  domain = "vpc"
+
+  tags = {
+    Name = "NAT Gateway Elastic IP"
+  }
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public_bastion.id
+
+  depends_on = [aws_internet_gateway.gw]
+
+  tags = {
+    Name = "NAT Gateway"
+  }
+}
