@@ -1,9 +1,10 @@
 output "vpc_details" {
-  description = "Details of the created VPC, including subnets and route tables"
+  description = "Details of the created VPC, including subnets, security groups, and route tables"
   value = {
     vpc_id   = aws_vpc.main.id
     vpc_cidr = aws_vpc.main.cidr_block
-    vpc_igw  = var.internet_gateway
+    vpc_igw  = aws_internet_gateway.gw.id
+
     subnets = {
       public_bastion = {
         id         = aws_subnet.public_bastion.id
@@ -22,11 +23,11 @@ output "vpc_details" {
         cidr_block = aws_subnet.private_db.cidr_block
       }
     }
+
+    security_groups = {
+      web      = aws_security_group.web.id
+      app      = aws_security_group.app.id
+      database = aws_security_group.database.id
+    }
   }
 }
-
-output "vpc_igw" {
-  description = "ID of the created Internet Gateway"
-  value       = aws_internet_gateway.gw.id
-}
-
