@@ -63,3 +63,9 @@ variable "private_db_az" {
   type        = string
   default     = "us-east-1a" # Change as needed
 }
+
+variable "internet_gateway" {
+  description = "Name of the internet gateway"
+  type        = string
+  default     = "kezie-lab-igw"
+}

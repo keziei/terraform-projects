@@ -3,7 +3,7 @@ output "vpc_details" {
   value = {
     vpc_id   = aws_vpc.main.id
     vpc_cidr = aws_vpc.main.cidr_block
-    vpc_name = var.vpc_name
+    vpc_igw  = var.internet_gateway
     subnets = {
       public_bastion = {
         id         = aws_subnet.public_bastion.id
@@ -24,3 +24,9 @@ output "vpc_details" {
     }
   }
 }
+
+output "vpc_igw" {
+  description = "ID of the created Internet Gateway"
+  value       = aws_internet_gateway.gw.id
+}
+

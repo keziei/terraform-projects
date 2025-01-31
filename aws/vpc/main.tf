@@ -45,3 +45,11 @@ resource "aws_subnet" "private_db" {
     Name = "Private DB Subnet"
   }
 }
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = var.internet_gateway
+  }
+}
